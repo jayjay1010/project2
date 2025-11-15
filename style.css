@@ -1,0 +1,150 @@
+/* Border box declaration 
+https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
+html {
+  box-sizing: border-box;
+}
+/* inherit border-box on all elements in the universe and before and after
+ */
+*, 
+*:before, 
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+	font-family: Arial, Geneva, sans-serif;
+}
+a {
+	color: #2772B0;
+}
+.wrapper {
+	width: 97%;
+	max-width: 1200px;
+	margin: 0 auto;
+	float: none;
+	background-color: #fff;
+}
+
+div img {
+	width: 100%;
+	max-width: 225px; 
+}
+
+/* grid system -- mobile first! */
+/* flex contatiner */
+
+.row {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+/* attribute selector to give some margin between columns and apply styles to flex items */
+
+[class*="col-"] {
+	margin-left: 4%;
+	flex: 0 0 92%;
+}
+
+/* Add background colors to see how much space each column is taking */
+
+.col-1 {
+	background-color: #A3CDD9;
+}
+
+.col-2 {
+	background-color: #FFFCE6;
+}
+.col-3 {
+  background-color: #F3D76E; 
+}
+
+.col-4 {
+  background-color: #C7B8A0; 
+}
+
+/* Tablet Landscape Screen Sizes
+  When the screen is at least 480px wide 
+  , all columns will take up 44% width.
+   This creates a 2-column layout on tablets.
+ */
+
+@media only screen and (min-width: 480px)  {
+	
+  .col-1,
+  .col-2,
+  .col-3,
+  .col-4{
+		flex: 0 0 44%; /* 2 columns per row */
+	}
+
+}
+/* Desktop screen Sizes 
+each column size is assigned a
+specific width to match the 4-column layout system
+col-1  = 1 column  (20%)
+col-2  = 2 columns (44%)
+col-3  = 3 columns (68%)
+col-4  = 4 columns (92%)
+*/
+@media only screen and (min-width: 768px) {
+  
+  
+    /* 1-column wide */
+ 	.col-1 {
+		flex: 0 0 20%;
+	}
+  
+    /* 2-column wide */
+	.col-2 {
+		flex: 0 0 44%;
+	}
+
+    /* 3-column wide → used in row 3 and row 5 */
+    .col-3 {
+        flex: 0 0 68%;
+    }
+
+    /* Full-width 4-column → used in row 4 */
+    .col-4 {
+        flex: 0 0 92%;
+    }
+
+
+}
+
+/* Mobile default order */
+.item-a { order: 2; } 
+.item-b { order: 1; } /* wide card appears first */
+.item-c { order: 3; }
+
+/* Tablet layout: natural order */
+@media only screen and (min-width: 480px) {
+  .item-a { order: 1; }
+  .item-b { order: 2; }
+  .item-c { order: 3; }
+}
+
+/* Desktop layout: 1-2-1 */
+@media only screen and (min-width: 768px) {
+  .item-a { order: 1; }
+  .item-b { order: 2; }
+  .item-c { order: 3; }
+}
+
+/* ROW 6 — Custom Flexbox Row
+- justify-content: center   (centers items)
+- align-items: flex-start   (aligns top edges)
+- flex-grow: 1              (each item grows equally)
+ */
+
+ /* Flexbox container adjustments */
+.row-6 {
+  justify-content: center;   /* center all items horizontally */
+  align-items: flex-start;   /* line up items at the top */
+}
+
+/* All items in row 6 grow equally */
+.row6-item {
+  flex-grow: 1;
+  flex-basis: 18%;   /* 5 items per row with small margin */
+}
