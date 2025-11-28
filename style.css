@@ -29,122 +29,202 @@ div img {
 	width: 100%;
 	max-width: 225px; 
 }
+[class*="col-"] {
+  padding: 15px;          /* makes colored backgrounds visible */
+  border-radius: 8px;     /* optional, makes it look nicer */
+}
+/* Background colors for each column type */
+.col-1 { background-color: #A3CDD9; }
+.col-2 { background-color: #FFFCE6; }
+.col-3 { background-color: #F3D76E; }
+.col-4 { background-color: #C7B8A0; }
 
 /* grid system -- mobile first! */
-/* flex contatiner */
+/*Every .row becomes a grid instead of flex */
 
 .row {
-	display: flex;
-	flex-flow: row wrap;
+	display: grid;                     /* turn each row into a grid layout */
+	grid-template-columns: 1fr;        /* default to single column */
+  gap: 20px;                          /* space between grid items */
 }
 
-/* attribute selector to give some margin between columns and apply styles to flex items */
+/* 
+   TABLET LAYOUT (min-width: 480px)
+   On tablet, we set a minimum height for auto-created rows
+   and set auto-created columns to 1fr width.
+   Also, we fix the order of row 5 to normal order.
+   ========================================================== */
+@media (min-width: 480px) {
 
-[class*="col-"] {
-	margin-left: 4%;
-	flex: 0 0 92%;
+    .row {
+  grid-auto-rows: minmax(200px, auto);     /* sets minimum height for auto-created rows */
+  grid-auto-columns: 1fr;                   /* auto-created columns get 1fr width */
 }
 
-/* Add background colors to see how much space each column is taking */
 
-.col-1 {
-	background-color: #A3CDD9;
+  /* Row 2 2 big cards takes up full space automatically */
+  /* Row 5 reorder fix on tablet: everything in normal order */
+  .item-a { order: 1; }
+  .item-b { order: 2; }
+  .item-c { order: 3; }
 }
 
-.col-2 {
-	background-color: #FFFCE6;
-}
-.col-3 {
-  background-color: #F3D76E; 
+
+/* 
+   DESKTOP LAYOUT (min-width: 768px)
+   Each row gets its own custom column layout on desktop.
+    */
+
+@media (min-width: 768px) {
+
+  /* -------------------------
+     ROW 1 — 4 equal columns
+     ------------------------- */
+  .row:nth-of-type(1) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+
+  /* -------------------------
+     ROW 2 — 2 half-width items
+     ------------------------- */
+  .row:nth-of-type(2) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .row:nth-of-type(2) .col-2 {
+    grid-column: span 2;
+  }
+
+
+  /* -------------------------
+     ROW 3 — 1 narrow + 1 wide (1–3)
+     ------------------------- */
+  .row:nth-of-type(3) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .row:nth-of-type(3) .col-1 {
+    grid-column: span 1;
+  }
+  .row:nth-of-type(3) .col-3 {
+    grid-column: span 3;
+  }
+
+
+  /* -------------------------
+     ROW 4 — full width card
+     ------------------------- */
+  .row:nth-of-type(4) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .row:nth-of-type(4) .col-4 {
+    grid-column: span 4;
+  }
+
+
+  /* -------------------------
+     ROW 5 — 1–2–1 layout (desktop)
+     ------------------------- */
+  .row:nth-of-type(5) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .row:nth-of-type(5) .item-a { grid-column: span 1; }
+  .row:nth-of-type(5) .item-b { grid-column: span 2; }
+  .row:nth-of-type(5) .item-c { grid-column: span 1; }
+
+  /* desktop order normal */
+  .item-a { order: 1; }
+  .item-b { order: 2; }
+  .item-c { order: 3; }
+
 }
 
-.col-4 {
-  background-color: #C7B8A0; 
-}
 
-/* Tablet Landscape Screen Sizes
-  When the screen is at least 480px wide 
-  , all columns will take up 44% width.
-   This creates a 2-column layout on tablets.
- */
+/* 
+   MOBILE ORDER CHANGE FOR ROW 5
+   On mobile, the middle card moves to the top.
+   Grid supports order just like flexbox.
+   ========================================================== */
 
-@media only screen and (min-width: 480px)  {
-	
-  .col-1,
-  .col-2,
-  .col-3,
-  .col-4{
-		flex: 0 0 44%; /* 2 columns per row */
-	}
+.item-a { order: 2; }  /* left card becomes second */
+.item-b { order: 1; }  /* wide card goes first */
+.item-c { order: 3; }  /* right card stays last */
 
-}
-/* Desktop screen Sizes 
-each column size is assigned a
-specific width to match the 4-column layout system
-col-1  = 1 column  (20%)
-col-2  = 2 columns (44%)
-col-3  = 3 columns (68%)
-col-4  = 4 columns (92%)
+
+/*
+I'm using the "grid-template-areas" property to create a custom layout for row 6.
+lets me basically draw a little map of where each item should go
+So Rocky spans across two columns on the bottom row. This is 
+something that would be more complicated with Flexbox, but Grid 
+makes it simple by assigning names to each "area" and placing 
+items into those slots
+This means:
+    - Bella, Harley, and Nova each get their own column on the top row
+    - Rocky spans across TWO columns on the bottom row
+    - Sasha sits on the right side
+
+  The key properties I used:
+
+    • display: grid;
+        Turns the container into a grid.
+
+    • grid-template-areas:
+        Lets me draw a “map” of the layout using names.
+
+    • grid-auto-flow: dense;
+        Helps the browser fill empty grid spaces more efficiently.
+
+    • gap: 15px;
+        Controls spacing between each grid cell.
 */
-@media only screen and (min-width: 768px) {
-  
-  
-    /* 1-column wide */
- 	.col-1 {
-		flex: 0 0 20%;
-	}
-  
-    /* 2-column wide */
-	.col-2 {
-		flex: 0 0 44%;
-	}
 
-    /* 3-column wide → used in row 3 and row 5 */
-    .col-3 {
-        flex: 0 0 68%;
-    }
-
-    /* Full-width 4-column → used in row 4 */
-    .col-4 {
-        flex: 0 0 92%;
-    }
-
-
-}
-
-/* Mobile default order */
-.item-a { order: 2; } 
-.item-b { order: 1; } /* wide card appears first */
-.item-c { order: 3; }
-
-/* Tablet layout: natural order */
-@media only screen and (min-width: 480px) {
-  .item-a { order: 1; }
-  .item-b { order: 2; }
-  .item-c { order: 3; }
-}
-
-/* Desktop layout: 1-2-1 */
-@media only screen and (min-width: 768px) {
-  .item-a { order: 1; }
-  .item-b { order: 2; }
-  .item-c { order: 3; }
-}
-
-/* ROW 6 — Custom Flexbox Row
-- justify-content: center   (centers items)
-- align-items: flex-start   (aligns top edges)
-- flex-grow: 1              (each item grows equally)
- */
-
- /* Flexbox container adjustments */
 .row-6 {
-  justify-content: center;   /* center all items horizontally */
-  align-items: flex-start;   /* line up items at the top */
+  display: grid;              /* turn each row into a grid layout */
+  grid-auto-flow: dense;                /* smart packing of items */
+  gap: 15px;                   /* space between grid items */
+ grid-template-areas:              
+        "bella   harley  nova"
+        "rocky   rocky   sasha";
+}                                 
+
+/* Item styling for row 6 */
+.row6-item {
+  padding: 10px;
+  text-align: center;
 }
 
-/* All items in row 6 grow equally */
-.row6-item {
-  flex-grow: 1;
-  flex-basis: 18%;   /* 5 items per row with small margin */
+/* Give each row 6 item a grid name */
+.row6-item:nth-child(1) { grid-area: bella; }  
+.row6-item:nth-child(2) { grid-area: harley; }
+.row6-item:nth-child(3) { grid-area: nova; }
+.row6-item:nth-child(4) { grid-area: rocky; }
+.row6-item:nth-child(5) { grid-area: sasha; }
+
+#foodBox {
+  margin-top: 20px;
+  padding: 15px;
+  background: #e9f0f2;
+  border-radius: 8px;
+  width: 350px;
+  text-align: center;
+}
+
+#foodImg {
+  width: 100%;
+  border-radius: 8px;
+  display: none;
+  margin-top: 10px;
+}
+
+#foodBtn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 9px;
+  border: none;
+  background: #2772B0;
+  color: white;
+  margin-top: 25px;
+  transition: 0.2s ease;
+  font-weight: bold;
+  cursor: pointer;
 }

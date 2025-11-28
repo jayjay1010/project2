@@ -152,10 +152,45 @@
     <img src="https://placedog.net/250/166/?id=24" alt="Sasha doggo">
     <p>Soft and gentle playful pup.</p>
   </article>
-
 </div>
-    
 
+<button id="foodBtn">Show Random Food</button>
+
+<div id="foodBox">
+  <h3>Random Food</h3>
+  <img id="foodImg" src="" alt="Random food image" />
+</div>
+
+<script src="https://unpkg.com/popmotion/dist/popmotion.global.min.js"></script>
+
+<script>
+let foodBtn = document.getElementById("foodBtn");
+let foodImg = document.getElementById("foodImg");
+
+foodBtn.addEventListener("click", function () {
+
+  fetch("https://foodish-api.com/api/")
+    .then(res => res.json())
+    .then(data => {
+
+      foodImg.src = data.image;
+      foodImg.style.display = "block";
+
+      // popmotion animation
+      popmotion.tween({
+        from: { opacity: 0, y: 25 },
+        to: { opacity: 1, y: 0 },
+        duration: 600
+      }).start(v => {
+        foodImg.style.opacity = v.opacity;
+        foodImg.style.transform =
+          "translateY(" + v.y + "px)";
+      });
+
+    });
+});
+</script>
+     
       </body>
 
 </html>
